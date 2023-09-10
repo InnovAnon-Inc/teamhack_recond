@@ -5,25 +5,57 @@
 #from inspect         import getmembers, getmodulename, isclass
 #from sys             import modules, path
 #from tempfile        import NamedTemporaryFile
+from ratelimit        import limits
 from teamhack_db.sql  import insert
 from teamhack_db.util import get_name, get_record_type
 #from            .sql  import *
 from             sql  import *
 #from            .util import diff
 
-def start_server(host="0.0.0.0", port=6000, dns=None, msf=None, sdn=None, *args, **kwargs):
-  #app = create_app(dns=dns, msf=msf, **kwargs)
-  #app.run(debug=True, host=host, port=port, *args)
+def portscan(queue):
+  print(f'portscan({queue})')
+  
 
+def subdomains(queue):
+  print(f'subdomains({queue})')
+def vhosts(queue):
+  print(f'vhosts({queue})')
+def subdirectories(queue):
+  print(f'subdirectories({queue})')
+def credentials(queue):
+  print(f'credentials({queue})')
+def flags(queue):
+  print(f'flags({queue})')
+
+@limits(calls=3, period=180)
+def loop(dns=None, msf=None, sdn=None, *args, **kwargs):
   inbound  = select_dns(dns)
   print(f'inbound: {inbound}')
   #inbound  = [k[0] for k in inbound]
   #print(f'inbound: {inbound}')
+
   psq      =     portscan_queue(inbound, msf) # msfcli   db_nmap psq
+  portscan(psq) # batch process
+
+  #svq      =      service_queue(inbound, sdn) # TODO should be populated by db_nmap ?
+
   sdq      =    subdomain_queue(inbound, sdn) # gobuster dns     sdq
+  #sdq      =    subdomain_queue(psq, sdn) # gobuster dns     sdq
+  subdomains(sdq) # sequential process
+
   vhq      =        vhost_queue(inbound, sdn) # gobuster vhost   shq
+  #vhq      =        vhost_queue(sdq, sdn) # gobuster vhost   shq
+  vhosts(vhq) # sequential process
+
   fpq      = subdirectory_queue(inbound, sdn) # gobuster dir     fpq
-  #crq      =   credential_queue(         sdn) # ssh linpeas, pspy
+  #fpq      = subdirectory_queue(vhq, sdn) # gobuster dir     fpq
+  subdirectories(fpq) # sequential process
+
+  crq      =   credential_queue(inbound, sdn) # hydra
+  credentials(crq) # sequential process
+
+  fgq      =         flag_queue(inbound, sdn) # ssh linpeas, pspy
+  flags(fgq)
 
   # TODO
   # - services found
@@ -92,10 +124,8 @@ def start_server(host="0.0.0.0", port=6000, dns=None, msf=None, sdn=None, *args,
 #
 #  return app
 
-
-
-
-
-
-
+def start_server(host="0.0.0.0", port=6000, dns=None, msf=None, sdn=None, *args, **kwargs):
+  while(True): loop(dns, msf, sdn, **kwargs)
+  #app = create_app(dns=dns, msf=msf, **kwargs)
+  #app.run(debug=True, host=host, port=port, *args)
 

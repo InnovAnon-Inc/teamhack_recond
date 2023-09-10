@@ -35,9 +35,9 @@ def create_table_fp   (conn): return execute(conn, """
 def create_table_srv  (conn): return execute(conn, """
   CREATE TABLE IF NOT EXISTS services    (
     id        SERIAL        PRIMARY KEY,
-    vhostid   INT           NOT NULL REFERENCES vhosts(id),
+    subdnid   INT           NOT NULL REFERENCES subdomains(id),
     port      INT2          NOT NULL,
-    UNIQUE(vhostid, port)
+    UNIQUE(subdnid, port)
   )
 """)
 
@@ -99,41 +99,45 @@ def select_dns  (conn):    return select(conn, """
 #  SELECT address           FROM hosts
 #  WHERE address IN %s
 #""", (tuple(q),))
-def select_msf  (conn, q): return select(conn, """
+def select_msf (conn, q): return select(conn, """
   SELECT address
   FROM hosts
   WHERE address IN %s
 """, q)
-def select_sdn  (conn, q): return select(conn, """
+def select_sdn (conn, q): return select(conn, """
   SELECT subdomain, host
   FROM subdomains
   WHERE host    IN %s
 """, q)
-def select_vh   (conn, q): return select(conn, """
+def select_vh  (conn, q): return select(conn, """
   SELECT vhost,     host
   FROM vhosts
   WHERE host    IN %s
 """, q)
-def select_fp   (conn, q): return select(conn, """
+def select_fp  (conn, q): return select(conn, """
   SELECT vhost,     host, path
   FROM subdirs
   JOIN vhosts ON vhostid = vhosts.id
   WHERE host   IN %s
 """, q)
-def select_srv  (conn): return select(conn, """
+def select_srv (conn, q): return select(conn, """
   SELECT vhost,     host, port
   FROM services
   JOIN vhosts ON vhostid = vhosts.id
-""")
-def select_creds(conn): return select(conn, """
-  SELECT vhost,     host, port, username, password
+  WHERE host   IN %s
+""", q)
+def select_cred(conn, q): return select(conn, """
+  SELECT subdomain, host, port, username, password
   FROM credentials
-  JOIN services ON serviceid = services.id
-""")
-def select_flags(conn): return select(conn, """
+  JOIN services   ON serviceid =   services.id
+  JOIN subdomains ON   subdnid = subdomains.id
+  WHERE host   IN %s
+""", q)
+def select_flag(conn, q): return select(conn, """
   SELECT            host, path, flag, isroot
   FROM flags
-""")
+  WHERE host   IN %s
+""", q)
 
 def get_queue(inbound, get_outbound, db):
   outbound = get_outbound(db,       inbound)
@@ -144,8 +148,10 @@ def get_queue(inbound, get_outbound, db):
   print(f'ret: {ret}')
   return ret
 
-def     portscan_queue(inbound, msf): return get_queue(inbound, select_msf, msf)
-def    subdomain_queue(inbound, sdn): return get_queue(inbound, select_sdn, sdn)
-def        vhost_queue(inbound, sdn): return get_queue(inbound, select_vh,  sdn)
-def subdirectory_queue(inbound, sdn): return get_queue(inbound, select_fp,  sdn)
+def     portscan_queue(inbound, msf): return get_queue(inbound, select_msf,  msf)
+def    subdomain_queue(inbound, sdn): return get_queue(inbound, select_sdn,  sdn)
+def        vhost_queue(inbound, sdn): return get_queue(inbound, select_vh,   sdn)
+def subdirectory_queue(inbound, sdn): return get_queue(inbound, select_fp,   sdn)
+def   credential_queue(inbound, sdn): return get_queue(inbound, select_cred, sdn)
+def         flag_queue(inbound, sdn): return get_queue(inbound, select_flag, sdn)
 

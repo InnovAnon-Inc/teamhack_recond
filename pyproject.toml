@@ -11,6 +11,7 @@ dependencies = [
   #"flask-restful",
   "psycopg2",
   #"socket",
+  "ratelimit",
   "teamhack_db",
 ]
 

@@ -5,7 +5,7 @@
 #from inspect         import getmembers, getmodulename, isclass
 #from sys             import modules, path
 #from tempfile        import NamedTemporaryFile
-from ratelimit        import limits
+from ratelimit        import limits, sleep_and_retry
 from teamhack_db.sql  import insert
 from teamhack_db.util import get_name, get_record_type
 #from            .sql  import *
@@ -27,6 +27,7 @@ def credentials(queue):
 def flags(queue):
   print(f'flags({queue})')
 
+@sleep_and_retry
 @limits(calls=3, period=180)
 def loop(dns=None, msf=None, sdn=None, *args, **kwargs):
   inbound  = select_dns(dns)

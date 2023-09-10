@@ -3,11 +3,18 @@ Put database connection details into this directory.
 ex: database.ini
 
 ```
-[postgresql]
+[dnsdb]
 host=db.example.com
 port=5432
 database=dns
-user=rest
+user=recond
+password=P@ssw0rd
+
+[msfdb]
+host=db.example.com
+port=5432
+database=db
+user=recond
 password=P@ssw0rd
 ```
 

@@ -11,6 +11,6 @@ RUN pip install      \
 ENTRYPOINT [         \
   "/usr/bin/python", \
   "-m",              \
-  "teamhack_rest",   \
+  "teamhack_recond", \
 ]
 

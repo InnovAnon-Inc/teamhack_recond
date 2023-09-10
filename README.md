@@ -1,6 +1,6 @@
-# REST API for DB used by PG-backed DNS-Server
-simple dns server using python
-![example workflow](https://github.com/InnovAnon-Inc/teamhack_rest/actions/workflows/pkgrel.yml/badge.svg)
+# Reconnaisance Daemon to monitor and populate DB used by PG-backed DNS-Server
+simple service using python
+![example workflow](https://github.com/InnovAnon-Inc/teamhack_recond/actions/workflows/pkgrel.yml/badge.svg)
 
 ```sh
 requirements:
@@ -22,3 +22,4 @@ socket
 python3 dns_server.py
 
 ```
+

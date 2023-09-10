@@ -1,5 +1,5 @@
 [project]
-name = "teamhack_rest"
+name = "teamhack_recond"
 # TODO version needs to be gotten from environment
 #version = "1.0.0"
 dynamic = ["version"]
@@ -8,7 +8,7 @@ description = "Hack the Box Team Support Services"
 dependencies = [
   #"dnslib",
   #"json",
-  "flask-restful",
+  #"flask-restful",
   "psycopg2",
   #"socket",
   "teamhack_db",

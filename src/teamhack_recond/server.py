@@ -15,17 +15,23 @@ from             sql  import *
 def portscan(queue):
   print(f'portscan({queue})')
   
+  #msfconsole -x "db_nmap"
 
 def subdomains(queue):
-  print(f'subdomains({queue})')
+  #print(f'subdomains({queue})')
+  pass
 def vhosts(queue):
-  print(f'vhosts({queue})')
+  #print(f'vhosts({queue})')
+  pass
 def subdirectories(queue):
-  print(f'subdirectories({queue})')
+  #print(f'subdirectories({queue})')
+  pass
 def credentials(queue):
-  print(f'credentials({queue})')
+  #print(f'credentials({queue})')
+  pass
 def flags(queue):
-  print(f'flags({queue})')
+  #print(f'flags({queue})')
+  pass
 
 @sleep_and_retry
 @limits(calls=3, period=180)

@@ -1,9 +1,9 @@
 from psycopg2           import connect
 from teamhack_db.conf   import config
-#from            .server import start_server
-from             server import start_server
-#from             .sql   import create_tables
-from              sql   import create_tables
+from            .server import start_server
+#from             server import start_server
+from             .sql   import create_tables
+#from              sql   import create_tables
 
 if __name__ == '__main__':
   conns        = dict()

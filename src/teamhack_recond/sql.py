@@ -1,7 +1,7 @@
 from teamhack_db.sql  import create_table, insert, execute, select
 from teamhack_db.util import get_name, get_record_type
-#from            .util import diff
-from             util import diff
+from            .util import diff
+#from             util import diff
 
 def create_table_sdn  (conn): return execute(conn, """
   CREATE TABLE IF NOT EXISTS subdomains  (

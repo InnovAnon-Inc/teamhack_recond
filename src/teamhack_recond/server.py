@@ -8,13 +8,13 @@
 from ratelimit        import limits, sleep_and_retry
 from teamhack_db.sql  import insert
 from teamhack_db.util import get_name, get_record_type
-#from            .sql  import *
-from             sql  import *
-#from            .util import diff
+from            .sql  import *
+#from             sql  import *
+from            .util import diff
 
 def portscan(queue):
   print(f'portscan({queue})')
-  
+
 
 def subdomains(queue):
   print(f'subdomains({queue})')

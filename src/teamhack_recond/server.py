@@ -13,8 +13,12 @@ from            .sql  import *
 from            .util import diff
 #from            util import diff
 
+#def portscan_daemon():
+    #Popen(['/usr/bin/env', 'msfconsole', '-X', ])
+    #pass
 def portscan(queue):
   print(f'portscan({queue})')
+
 
 
 def subdomains(queue):
@@ -127,6 +131,8 @@ def loop(dns=None, msf=None, sdn=None, *args, **kwargs):
 #  return app
 
 def start_server(host="0.0.0.0", port=6000, dns=None, msf=None, sdn=None, *args, **kwargs):
+  #psd = portscan_daemon()
+  #while(True): loop(dns, msf, sdn, psd, **kwargs)
   while(True): loop(dns, msf, sdn, **kwargs)
   #app = create_app(dns=dns, msf=msf, **kwargs)
   #app.run(debug=True, host=host, port=port, *args)

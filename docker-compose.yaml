@@ -1,8 +1,8 @@
 version: '3.8'
 services:
   teamhack_recond:
-    image: innovanon/teamhack-recond
-    container_name:  teamhack-recond
+    image: innovanon/teamhack_recond
+    container_name:  teamhack_recond
     ports:
       - "0.0.0.0:6000:6000/tcp"
     volumes:

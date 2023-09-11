@@ -18,9 +18,13 @@ from            .util import diff
     #pass
 def portscan(queue):
   print(f'portscan({queue})')
+<<<<<<< HEAD
+  
   #msfconsole -x "db_nmap"
+=======
 
 
+>>>>>>> 679c94361d59c17d926cca8b4904e14920d4ce62
 
 def subdomains(queue):
   #print(f'subdomains({queue})')

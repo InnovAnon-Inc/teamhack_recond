@@ -11,6 +11,7 @@ from teamhack_db.util import get_name, get_record_type
 from            .sql  import *
 #from             sql  import *
 from            .util import diff
+#from            util import diff
 
 def portscan(queue):
   print(f'portscan({queue})')

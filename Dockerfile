@@ -13,6 +13,6 @@ ENTRYPOINT [         \
   "/usr/bin/env",    \
   "python",          \
   "-m",              \
-  "teamhack_recond", \
+  "teamhack_recond"  \
 ]
 

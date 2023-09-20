@@ -17,11 +17,10 @@ services:
     #  timeout:       3s
     #  retries:       10
     depends_on:
-      #postgres:
-      #  condition: service_healthy
-      #syslog:
-      #  condition: service_started
-      #  #condition:   service_healthy
+      postgres:
+        condition: service_healthy
+      syslog:
+        condition: service_started
       teamhack_dns:
         condition: service_healthy
     #networks:
@@ -30,4 +29,5 @@ services:
 
 volumes:
   recond:
+    external: true
 

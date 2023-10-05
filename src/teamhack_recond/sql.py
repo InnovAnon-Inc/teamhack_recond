@@ -99,11 +99,14 @@ def select_dns  (conn):    return select(conn, """
 #  SELECT address           FROM hosts
 #  WHERE address IN %s
 #""", (tuple(q),))
-def select_msf (conn, q): return select(conn, """
+def select_msf (conn, q):
+  ret = select(conn, """
   SELECT address
   FROM hosts
   WHERE address IN %s
 """, q)
+  ret = [k[0] for k in ret]
+  return ret
 def select_sdn (conn, q): return select(conn, """
   SELECT subdomain, host
   FROM subdomains

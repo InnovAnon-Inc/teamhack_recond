@@ -105,41 +105,41 @@ def select_msf (conn, q):
   SELECT address
   FROM hosts
   WHERE address IN %s
-""", (q,))
+""", (tuple(q),))
 def select_sdn (conn, q): return select(conn, """
   SELECT subdomain, host
   FROM subdomains
   WHERE host    IN %s
-""", (q,))
+""", (tuple(q),))
 def select_vh  (conn, q): return select(conn, """
   SELECT vhost,     host
   FROM vhosts
   WHERE host    IN %s
-""", (q,))
+""", (tuple(q),))
 def select_fp  (conn, q): return select(conn, """
   SELECT vhost,     host, path
   FROM subdirs
   JOIN vhosts ON vhostid = vhosts.id
   WHERE host   IN %s
-""", (q,))
+""", (tuple(q),))
 def select_srv (conn, q): return select(conn, """
   SELECT vhost,     host, port
   FROM services
   JOIN vhosts ON vhostid = vhosts.id
   WHERE host   IN %s
-""", (q,))
+""", (tuple(q),))
 def select_cred(conn, q): return select(conn, """
   SELECT subdomain, host, port, username, password
   FROM credentials
   JOIN services   ON serviceid =   services.id
   JOIN subdomains ON   subdnid = subdomains.id
   WHERE host   IN %s
-""", (q,))
+""", (tuple(q),))
 def select_flag(conn, q): return select(conn, """
   SELECT            host, path, flag, isroot
   FROM flags
   WHERE host   IN %s
-""", (q,))
+""", (tuple(q),))
 
 def get_queue(inbound, get_outbound, db):
   outbound = get_outbound(db,       inbound)

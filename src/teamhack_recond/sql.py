@@ -100,6 +100,7 @@ def select_dns  (conn):    return select(conn, """
 #  WHERE address IN %s
 #""", (tuple(q),))
 def select_msf (conn, q):
+  print("select_msf(q=%s)" % (q,))
   ret = select(conn, """
   SELECT address
   FROM hosts

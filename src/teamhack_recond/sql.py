@@ -105,7 +105,7 @@ def select_msf (conn, q):
   FROM hosts
   WHERE address IN %s
 """, q)
-  ret = [k[0] for k in ret]
+  #ret = [k[0] for k in ret]
   return ret
 def select_sdn (conn, q): return select(conn, """
   SELECT subdomain, host

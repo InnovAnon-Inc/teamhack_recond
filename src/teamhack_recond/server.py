@@ -43,8 +43,8 @@ def flags(queue):
 def loop(dns=None, msf=None, sdn=None, *args, **kwargs):
   inbound  = select_dns(dns)
   print(f'inbound: {inbound}')
-  #inbound  = [k[0] for k in inbound]
-  #print(f'inbound: {inbound}')
+  inbound  = [k[0] for k in inbound]
+  print(f'inbound: {inbound}')
 
   psq      =     portscan_queue(inbound, msf) # msfcli   db_nmap psq
   portscan(psq) # batch process

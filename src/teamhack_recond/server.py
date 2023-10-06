@@ -6,6 +6,7 @@
 #from sys             import modules, path
 #from tempfile        import NamedTemporaryFile
 from ratelimit        import limits, sleep_and_retry
+from requests         import post
 from teamhack_db.sql  import insert
 from teamhack_db.util import get_name, get_record_type
 from            .sql  import *
@@ -13,14 +14,15 @@ from            .sql  import *
 from            .util import diff
 #from            util import diff
 
-#def portscan_daemon():
-    #Popen(['/usr/bin/env', 'msfconsole', '-X', ])
-    #pass
 def portscan(queue):
   print(f'portscan({queue})')
-  #msfconsole -x "db_nmap"
+  nmap      = 'http://0.0.0.0:55432/upload'
+  response  = post(nmap,      files={'file': queue})
+  if response.status_code != 200: return response.text, response.status_code
 
-
+  import_db = 'http://0.0.0.0:65432/upload'
+  response  = post(import_db, files={'file': response.text})
+  return response.text, response.status_code
 
 def subdomains(queue):
   #print(f'subdomains({queue})')
@@ -47,11 +49,15 @@ def loop(dns=None, msf=None, sdn=None, *args, **kwargs):
   print(f'inbound: {inbound}')
 
   psq      =     portscan_queue(inbound, msf) # msfcli   db_nmap psq
-  portscan(psq) # batch process
+  print(f'psq: {psq}')
+  text, code = portscan(psq) # batch process
+  print(f'text: {text}')
+  if code != 200: raise Exception(f'code: {code}')
 
   #svq      =      service_queue(inbound, sdn) # TODO should be populated by db_nmap ?
 
   sdq      =    subdomain_queue(inbound, sdn) # gobuster dns     sdq
+  print(f'sdq: {sdq}')
   #sdq      =    subdomain_queue(psq, sdn) # gobuster dns     sdq
   subdomains(sdq) # sequential process
 
@@ -78,6 +84,11 @@ def loop(dns=None, msf=None, sdn=None, *args, **kwargs):
   #     - recursively download website
   #       - static analysis
   #       - bulk_extractor => generate wordlists
+  #       - cewl
+  #       - cupp
+  #   - sqlmap
+  #   - hydra/ncrack/medusa
+  #   - db_autopwn
   pass
 
 

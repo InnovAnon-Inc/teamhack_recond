@@ -12,6 +12,7 @@ RUN pip install teamhack_recond
 WORKDIR  /var/teamhack
 VOLUME ["/var/teamhack/etc"]
 
+RUN test -x /usr/bin/env
 ENTRYPOINT [         \
   "/usr/bin/env",    \
   "python",          \

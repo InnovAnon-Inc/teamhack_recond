@@ -7,13 +7,12 @@ FROM python:latest
 #  /tmp/dist/*.whl    \
 #&& rm -frv           \
 #  /tmp/dist/
-RUN pip install teamhack_recond
+RUN pip install teamhack_recond \
+&&  test -x /usr/bin/env        \
+&&  command -v python
 
 WORKDIR  /var/teamhack
 VOLUME ["/var/teamhack/etc"]
-
-RUN test -x /usr/bin/env
-RUN command -v python
 ENTRYPOINT [         \
   "/usr/bin/env",    \
   "python",          \

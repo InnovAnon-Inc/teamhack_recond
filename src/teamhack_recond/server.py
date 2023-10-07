@@ -6,7 +6,7 @@
 #from sys             import modules, path
 #from tempfile        import NamedTemporaryFile
 from ratelimit        import limits, sleep_and_retry
-from requests         import post
+from requests         import post, put
 from teamhack_db.sql  import insert
 from teamhack_db.util import get_name, get_record_type
 from            .sql  import *
@@ -16,12 +16,14 @@ from            .util import diff
 
 def portscan(queue):
   print(f'portscan({queue})')
-  nmap      = 'http://0.0.0.0:55432/upload'
-  response  = post(nmap,      files={'file': queue})
+  nmap      = 'http://192.168.2.252:55432/upload'
+  #response  = post(nmap,      files={'file': queue})
+  response  = put(nmap,      data='\n'.join(queue))
   if response.status_code != 200: return response.text, response.status_code
 
-  import_db = 'http://0.0.0.0:65432/upload'
-  response  = post(import_db, files={'file': response.text})
+  import_db = 'http://192.168.2.252:65432/upload'
+  #response  = post(import_db, files={'file': response.text})
+  response  = put(import_db, data='\n'.join(response.text))
   return response.text, response.status_code
 
 def subdomains(queue):

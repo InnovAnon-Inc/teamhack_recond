@@ -12,6 +12,7 @@ dependencies = [
   "psycopg2",
   #"socket",
   "ratelimit",
+  "requests",
   "teamhack_db",
 ]
 

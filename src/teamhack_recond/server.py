@@ -16,12 +16,12 @@ from            .util import diff
 
 def portscan(queue):
   print(f'portscan({queue})')
-  nmap      = 'http://0.0.0.0:55432/upload'
+  nmap      = 'http://192.168.2.252:55432/upload'
   #response  = post(nmap,      files={'file': queue})
   response  = put(nmap,      data='\n'.join(queue))
   if response.status_code != 200: return response.text, response.status_code
 
-  import_db = 'http://0.0.0.0:65432/upload'
+  import_db = 'http://192.168.2.252:65432/upload'
   #response  = post(import_db, files={'file': response.text})
   response  = put(import_db, data='\n'.join(response.text))
   return response.text, response.status_code
